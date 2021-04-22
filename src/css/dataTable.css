@@ -1,0 +1,9 @@
+.MuiDataGrid-root {
+    border:0ch !important
+}
+.MuiDataGrid-root .MuiDataGrid-footer {
+    border-top: 1px solid black !important  ;
+}
+.MuiDataGrid-root .MuiDataGrid-columnsContainer {
+    border-bottom: 1px solid black !important  ;
+}

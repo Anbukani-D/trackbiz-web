@@ -1,0 +1,249 @@
+/**Screen height **/
+.screenHeight{
+    min-height: 780 !important;
+
+}
+.bgColor{
+    background-color:#7474741A !important;
+}
+
+/** Login Bg color*/
+
+.activeBgColor {
+    background-color: #002173 !important;
+}
+
+/** Used for login img bottom text */
+.loginImgTextOverlap {
+    bottom: 5px;
+}
+.fontColor {
+    color:#F57921 !important;
+}
+.activeFontColor {
+    color:#002173 !important;
+}
+.pointer {
+    cursor:pointer !important;
+}
+
+.mapEditStyle {
+    right: 15px;
+    top: 15px;
+}
+
+
+.xSmallText {
+    font-size: 10px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+.smallText {
+    font-size: 12px !important;
+    font-family: 'Montserrat', sans-serif !important; 
+}
+.normalText {
+    font-size: 14px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.mediumText {
+    font-size: 16px !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+.bigText {
+    font-size: 16px !important;
+    font-family: 'Montserrat', sans-serif  !important;
+}
+
+.megaText {
+    font-size: 18px !important;
+    font-weight: bolder !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+.gigaText {
+    font-size: 28px !important;
+    font-weight: bolder !important;
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+/** switch style*/
+
+.MuiTypography-body1{
+    font-size: 12px !important;
+    font-family: 'Montserrat', sans-serif !important; 
+    color:#002173 !important;
+    font-weight: 900 !important;
+}
+
+/** Notification style*/
+
+.notificationHeight {
+    height: 300px;
+}
+.scrollStyle {
+    overflow: scroll !important;
+}
+
+/** Popover style **/
+
+.popover{
+    border: 2px solid #002173 !important;
+    border-top-right-radius: 0.15rem !important;
+}
+
+.borderRadius {
+    border-radius: 15px !important;
+}
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout .pro-sidebar-footer{
+    border-top:none !important;
+}
+.themeBorderStyle {
+    border: 1px solid #F57921 !important;
+}
+.borderStyle {
+    border: 1px solid #002173 !important;
+}
+.border-left.leftBorderStyle  {
+	border-left: 3px solid !important;
+	border-Color: #F57921 !important;
+}
+
+/** table style **/
+
+table {
+	overflow-x: scroll;
+	max-height: 150px;
+}
+  
+td,
+th {
+	width: 1%;
+	display: fixed!important;
+}
+  
+.table-fixed thead {
+	width: 100%;
+}
+  
+.table-fixed tbody {
+	height: 90px;
+	overflow-y: scroll;
+	width: 100%;
+}
+table {
+	border-collapse: collapse;
+	overflow-x: scroll;
+}
+
+thead, tbody {
+    display: block;
+}
+
+table td, table th, .noBorderTop {
+    border-top: none !important;
+}
+
+table thead th .noBorderBottom {
+    border-bottom: none !important;
+}
+
+/**  Search input**/
+.no-outline:focus {
+    outline: none !important;
+}
+.input-style {
+    border: 0 !important;
+}
+
+/** card style*/
+.card{
+    border-radius: 1.15rem !important;
+}
+
+.hoverStyle:hover {
+    font-weight: bolder !important;
+    font-size: 16px !important;
+}
+
+.tooltip-inner {
+    background-color: #ffffff!important;
+    color:black !important;
+    border-radius: 5px !important;
+}
+
+/** Circle progress bar style */
+#progressInput {
+	margin: 20px auto;
+	width: 30%;
+}
+  
+.circle-background-blue,
+.circle-progress-blue {
+	fill: none;
+}
+  
+.circle-background-blue {
+	stroke: #CCDAFF;
+}
+  
+.circle-progress-blue {
+	stroke: #6685D1;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+  
+.circle-text {
+	font-weight: bold;
+	fill:black;
+}
+
+/** orange*/
+.circle-background-orange,
+.circle-progress-orange {
+	fill: none;
+}
+
+.circle-background-orange {
+	stroke: #FFDCC3;
+}
+
+.circle-progress-orange {
+	stroke: #F4AA76;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+/** red*/
+.circle-background-red,
+.circle-progress-red {
+	fill: none;
+}
+
+.circle-background-red {
+	stroke: #FFB7B7;
+}
+
+.circle-progress-red {
+	stroke: #E86262;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+/** green*/
+.circle-background-green,
+.circle-progress-green {
+	fill: none;
+}
+
+.circle-background-green {
+	stroke:  #9FF174;
+}
+
+.circle-progress-green {
+	stroke: #389805;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.cke_chrome {
+	border:0 !important
+}
+

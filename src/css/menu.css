@@ -1,0 +1,39 @@
+.pro-sidebar .pro-menu a{
+    color:black !important
+}
+
+.pro-icon-wrapper :hover{
+    color:#F57921 !important;
+}
+
+.pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout .pro-sidebar-header{
+    border-bottom: none !important;
+}
+.pro-sidebar .pro-menu a:hover {
+    color:#F57921 !important;
+}
+
+
+/** Used for top menu*/
+.nav-tabs .nav-link{
+    border-bottom: #F57921 !important;
+    padding: 10px !important;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    background-color:transparent !important;
+    border:0 !important ;
+    border-bottom: #F57921 !important;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link{
+    border-bottom: 1px solid #F57921 !important;
+
+}
+.nav-tabs .nav-link{
+    border: none !important; 
+    border-top-left-radius: none !important;
+    border-top-right-radius: none !important;
+}
+.navbar-nav {
+    flex-direction: unset !important;
+}
