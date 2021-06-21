@@ -6,7 +6,6 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Icomoon from '../../libraries/Icomoon';
 import {Link} from 'react-router-dom';
-import ChangePassword from "../general/ChangePassword";
 
 class Settings extends React.Component{
     state = {

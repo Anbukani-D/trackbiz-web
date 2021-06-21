@@ -39,7 +39,6 @@ class Configuration extends React.Component {
         singleSelectList:'',
         multiSelectList:'',
         names:[],
-        
     }
 
     render() {

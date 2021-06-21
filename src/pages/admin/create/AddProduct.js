@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import {brandOptions, categoryOptions,locationOptions } from '../../../common/DropdownList';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class AddProduct extends React.Component {
     state={
@@ -16,7 +17,10 @@ class AddProduct extends React.Component {
         location:'',
         quantity:'',
         addProductModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false,
+        createAddField:false,
+        checkboxValue:[]
     }
 
     render() {
@@ -95,7 +99,19 @@ class AddProduct extends React.Component {
                                     value={this.state.quantity}
                                     onChange={(e)=>this.setState({quantity:e.target.value})}
                                 />   
-                            </div>                      
+                            </div>  
+                            <div className="d-flex align-items-center my-3">
+                                <Icomoon icon="addField" className="align-self-center mx-3 pointer" size={25} oonClick={this.addCheckboxOption} />
+                                <span className="smallText pointer" onClick={()=>{this.setState({createAddField:true})}}>Add Field</span>
+                            </div>
+                            {this.state.createAddField ? this.renderAddField() : ' '}  
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Product added successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>                  
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                         </form> 
                     </Modal.Body>
@@ -103,13 +119,36 @@ class AddProduct extends React.Component {
             </Modal>  
         )    
     } 
+    renderAddField() {
+        return(
+            <>
+            {this.state.checkboxValue.map(( index)  =>(
+                    <div className="text-center mt-3">
+                        <p className="normalText text-dark"><CustomInput  
+                    placeholder="Field Name*" 
+                    value={this.state.fieldName}
+                    onChange={(e)=>this.setState({fieldName:e.target.value})}
+                /> <Icomoon icon="cross" size={12} onClick={() => this.deleteCheckboxOption(index)}/> <Icomoon icon="dropdown" size={12}/></p>
+                    </div>
+                ))}
+                
+            </>
+        )
+    }
+    // Add check box option
+    addCheckboxOption = () => {
+        let boxValue = this.state.checkboxValue
+        boxValue.push(this.state.checkboxLabel)
+        this.setState({checkboxValue:boxValue})
+    }
+
 
 
     // onsubmit function for add product inputs
 
     onSubmitAddProduct= (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default AddProduct;

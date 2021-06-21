@@ -22,6 +22,9 @@ import moment from 'moment';
 import {CustomInput} from '../../../common/Components';
 import trackIcon from '../../../assets/images/trackicon.svg';
 import CKEditor from 'ckeditor4-react';
+import Message from '../../general/Message';
+import Call from '../../general/Call';
+
 
 const notificationPopover = (
     <Popover id="popover-notification">
@@ -115,14 +118,8 @@ class ViewLeads extends React.Component {
             <Container>
                 <Row className="ml-4">
                     <div className="rounded bg-white p-2 ml-3 row shadow">
-                        <div className="mx-3">
-                            <Icomoon icon="chat" size={22} className="activeFontColor"/>
-                            <p className="xSmallText fontColor mb-0">Message</p>
-                        </div>
-                        <div className="mx-3">
-                            <Icomoon icon="telephone" size={22} className="activeFontColor" />
-                            <p className="xSmallText fontColor mb-0">Call</p>
-                        </div>
+                        <Message/>
+                        <Call/>
                     </div>
                 </Row>
                 <Row>

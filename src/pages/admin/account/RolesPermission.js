@@ -12,30 +12,8 @@ import modalImg from '../../../assets/images/modal.svg'
 import Alert from "react-bootstrap/Alert";
 import {ThemeButton, CustomInput} from '../../../common/Components';
 import addActivities from '../../../assets/images/addLead.svg';
-
-// Render Menu function for data table data 
-const popover = (
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="edit" size={12}/>
-            Edit
-        </p>
-    </Popover>
-);
-
-// Render Menu function for data table header
-const popoverHeader =(
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-  </Popover>
-)
+import ConfirmModal from '../../../common/ConfirmModal';
+import ToastMessage from '../../../common/ToastMessage';
 
 class RolePermission extends React.Component {
     state={
@@ -43,25 +21,33 @@ class RolePermission extends React.Component {
         rowDataState:[],
         rolesData:[],
         permissionData:[],
-        viewCardDetails:false,
         role:'Admin',
         user:'Jeni',
-        member:'20'
+        member:'20',
+        // Toast message , edit , delete
+        toastEditSuccess:false,
+        toastDeleteSuccess:false,
+
+        // Modal edit, delete msg
+        editPopup:false,
+        deleteModal:false,
+        viewCardDetails:false,
+       
     }
 
     componentDidMount () {
         const columnDataState = [
             {field: 'icon', headerName:
             <div>
-                <OverlayTrigger trigger="click" placement="right" overlay={popoverHeader}>
-                    <Icomoon className="pointer" icon="vmore" size={20} />
+                <OverlayTrigger trigger="focus" placement="right" overlay={this.popoverHeader()}>
+                    <button className="button-none"> <Icomoon className="pointer" icon="vmore" size={20} /></button>
                 </OverlayTrigger>
             </div>,
-            width:70,
-            renderCell: () => (
+            width:95,
+            renderCell: (data) => (
                 <div>
-                    <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-                        <Icomoon className="pointer" icon="vmore" size={20}  />
+                    <OverlayTrigger trigger="focus" placement="right" overlay={this.popover(data.id)}>
+                        <button className="button-none"> <Icomoon className="pointer" icon="vmore" size={20}  /></button>
                     </OverlayTrigger>
                 </div>
               ),
@@ -125,12 +111,49 @@ class RolePermission extends React.Component {
         ];
         this.setState({columnDataState,rowDataState, permissionData:permissionData })
     }
+
+    // Render Menu function for data table data 
+    popover = (id)=> {
+        return (
+            <Popover id="popover-basic" className="border-0 p-3" >
+                <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                    <Icomoon className="mr-2" icon="delete" size={12} />
+                    Delete
+                </p>
+                <p className="my-1 pointer xSmallText" onClick={()=>this.setState({editPopup:true})}>
+                    <Icomoon className="mr-2" icon="edit" size={12}/>
+                    Edit
+                </p>
+            </Popover>
+      )};
+
+    // Render Menu function for data table header
+     popoverHeader = () => {
+        return(
+           <Popover id="popover-basic" className="border-0 p-3" >
+               <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                   <Icomoon className="mr-2" icon="delete" size={12}/>
+                   Delete 
+               </p>
+           </Popover>
+       )
+    }
     render() {
         return(
             <>
             {/* {this.renderCreateRole()} */}
                 {this.renderRolePermissionDataTable()}
                 {this.renderViewDetails()}
+                {this.renderEditPopup()}
+                <ConfirmModal
+					visible={this.state.deleteModal}
+					heading="Delete Roles"
+                    delete
+                    buttonTitle="Delete"
+					title="Are you sure you want to Delete"
+					onsubmitConfirm={() => this.handleDelete()}
+					handleClose={() => this.setState({ deleteModal: false, })}
+				/>    
             </>
         )
     }
@@ -159,8 +182,11 @@ class RolePermission extends React.Component {
                 <div className="ml-4 d-flex">
                     <CreateAccountButton/>
                     <div className="border col-md-4 bg-white rounded border-secondary d-flex justify-content-between py-2 my-2 mx-3">
-                        <input type="search" className="no-outline input-style smallText w-75" 
+                        <input 
+                            type="search" 
+                            className="no-outline input-style smallText w-75" 
                             placeholder="Role..."
+                            onChange={this._handleSearchChange}
                         />
                         <Icomoon className="align-self-center" icon="search" size={15}/>
                     </div> 
@@ -176,10 +202,18 @@ class RolePermission extends React.Component {
                         checkboxSelection={true}
                         className="smallText"
                     />
+                     <div className="d-flex justify-content-center">
+                        <ToastMessage 
+                            toastMessagePop={this.state.toastDeleteSuccess}
+                            message="Role Deleted successfully"
+                            handleClose={()=> this.setState({ toastDeleteSuccess: false })}
+                        />
+                    </div>
                 </div>
             </Container>
         )
     }
+
 
     // Render view details popup 
     renderViewDetails() {
@@ -275,6 +309,112 @@ class RolePermission extends React.Component {
 			</div>
 		);
 	};
+
+    // Render Edit leads popup details
+    renderEditPopup() {
+        return( 
+            <div className="position-absolute" style={{top:'1px', right:'1px'}}>
+                <div className="d-flex justify-content-end align-items-end mt-5 mr-0">
+                    <Alert show={this.state.editPopup} className="col-md-7 shadow border bg-white borderRadius">
+                        <div className="d-flex justify-content-end p-2">
+                            
+                            <div className="col-md-4">
+                                <Icomoon icon="delete" className="mr-3 pointer" size={20} color="#F57921" onClick={()=>this.setState({deleteModal:true})}/>
+                                <Icomoon icon="close" className="pointer" size={20} color="#F57921" onClick={()=> this.setState({editPopup:false})}/>
+                            </div>  
+                        </div>
+                        <hr></hr>
+                        <form onSubmit={this.onSubmitEditRole}>
+                            <div className="row mt-3 p-2">
+                                <div className="col-md-5">
+                                    <p className="my-1 pointer xSmallText text-left">
+                                        Role
+                                    </p> 
+                                </div>
+                                <div className="col-md-7">
+                                    <input 
+                                        type="text" 
+                                        class="inputField mb-2" 
+                                        id="role" 
+                                        aria-describedby="role" 
+                                        value={this.state.role ? this.state.role: 'Admin'}
+                                        onChange={(e)=>this.setState({role:e.target.value})}
+                                    />  
+                                </div>
+                                <div className="col-md-5">
+                                    <p className="my-1 pointer xSmallText text-left">
+                                        Member
+                                    </p> 
+                                </div>
+                                <div className="col-md-7">
+                                    <input type="text" 
+                                        class="inputField" 
+                                        id="member" 
+                                        aria-describedby="member" 
+                                        value={this.state.member ? this.state.member: '20'}
+                                        onChange={(e)=>this.setState({member:e.target.value})}
+                                    />  
+                                </div>
+                            </div>
+                            <div className="d-flex justify-content-end">
+                                <div className="col-md-4">
+                                    <img src={modalImg} alt="modalImg" width="100%" height="200"/>
+                                </div>
+                            </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastEditSuccess}
+                                    message="Role updated successfully"
+                                    handleClose={()=> this.setState({ toastEditSuccess: false })}
+                                />
+                            </div>
+                            <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-11 fontStyle mt-3 py-2 ml-3 megaText fontColor" label="SAVE"/>
+                        </form>
+                    </Alert>
+                </div>
+            </div>
+        )
+    }
+
+    // Search handle function
+    _handleSearchChange = (e) => {
+        const { value } = e.target;
+        const lowercasedValue = value.toLowerCase();
+        this.setState(prevState => {
+            const rowDataState = prevState.rowDataState.filter(id =>
+                id.role.toLowerCase().includes(lowercasedValue) ||  
+                id.members.toLowerCase().includes(lowercasedValue) ||
+                id.createDate.toLowerCase().includes(lowercasedValue) ||
+                id.lastModifiedDate.toLowerCase().includes(lowercasedValue) 
+            );
+            return { rowDataState };
+        });   
+    };
+
+    // On submit delete function
+    handleDelete = (status) => {
+        this.setState({deleteModal:false, toastDeleteSuccess:true})
+		// const leadId = this.state.deleteId;
+		// deleteLead(leadId).then(response => {
+        //     if(response && response.status) {
+		// 		console.log(response);
+        //         this.setState({deleteModal:false,toastDeleteSuccess:true})
+				
+        //     }
+        // }).catch(error => {
+        //     console.log(error);
+        // });
+    };
+
+    // On submit edit role function
+    onSubmitEditRole = async(e) =>{
+        e.preventDefault();
+        this.setState({ 
+            toastEditSuccess:true,
+        })
+       
+    }
+
 }
 
 export default RolePermission

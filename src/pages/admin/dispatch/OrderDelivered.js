@@ -4,74 +4,48 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Icomoon from '../../../libraries/Icomoon';
 import DataTable from '../../../common/DataTable';
-import {ThemeButton} from '../../../common/Components';
+import Modal from 'react-bootstrap/Modal'
+import {CustomInput, ThemeButton} from '../../../common/Components';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import modalImg from '../../../assets/images/modal.svg'
 import Alert from "react-bootstrap/Alert";
 import addActivities from '../../../assets/images/addLead.svg';
+import ConfirmModal from '../../../common/ConfirmModal';
+import ToastMessage from '../../../common/ToastMessage';
 
-// Render Menu function for data table data 
-const popover = (
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="edit" size={12}/>
-            Edit
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="telephone" size={12}/>
-            Call
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="chat" size={12}/>
-            Msg
-        </p>
-    </Popover>
-  );
-
-// Render Menu function for data table header
-const popoverHeader =(
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="chat" size={12}/>
-            Msg
-        </p>
-  </Popover>
-)
 
 class OrderDelivered extends React.Component {
     state={
         columnDataState:[],
         rowDataState:[],
         orderData:[],
+        productData:[],
+        // Toast message , edit , delete
+        toastDeleteSuccess:false,
+        toastMessageSuccess:false,
+        // Modal edit, delete, msg, view
+        deleteModal:false,
+        msgModal:false,
         viewCardDetails:false,
-        productData:[]
     }
 
     componentDidMount () {
         const columnDataState = [
             {field: 'icon', headerName:
-                <div>
-                    <OverlayTrigger trigger="click" placement="right" overlay={popoverHeader}>
-                        <Icomoon icon="vmore" size={20} />
+            <div>
+                <OverlayTrigger trigger="focus" placement="right" overlay={this.popoverHeader()}>
+                    <button className="button-none"><Icomoon className="pointer" icon="vmore" size={20} /></button>
                 </OverlayTrigger>
-                </div>,
-                width:70,
-                renderCell: () => (
-                    <div>
-                        <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-                            <Icomoon  className="pointer"  icon="vmore" size={20} />
-                        </OverlayTrigger>
-                    </div>
-                  ),
+            </div>,
+            width:95,
+            renderCell: (data) => (
+                <div>
+                    <OverlayTrigger trigger="focus" placement="right" overlay={this.popover(data.id)}>
+                        <button className="button-none"><Icomoon className="pointer" icon="vmore" size={20}  /></button>
+                    </OverlayTrigger>
+                </div>
+              ),
             },
             {field: 'orderId', headerName:'Order ID', width: 150 }, 
             {field: 'customerName' , headerName:'Customer Name', width: 150 }, 
@@ -137,12 +111,59 @@ class OrderDelivered extends React.Component {
         ];
         this.setState({columnDataState,rowDataState, productData:productData })
     }
+
+    // Render Menu function for data table data 
+    popover = (id)=> {
+        return (
+            <Popover id="popover-basic" className="border-0 p-3" >
+                <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                    <Icomoon className="mr-2" icon="delete" size={12} />
+                    Delete
+                </p>
+                <p className="my-1 pointer xSmallText"><a className="text-decoration-none text-dark" href="tel:+91 9886876448">
+                    <Icomoon className="mr-2" icon="telephone" size={12}/>
+                    Call</a>
+                </p>
+                <p className="my-1 pointer xSmallText" onClick={()=>{this.setState({msgModal:true})}}>
+                    <Icomoon className="mr-2" icon="chat" size={12}/>
+                    Msg
+                </p> 
+            </Popover>
+        )
+    };
+
+    // Render Menu function for data table header
+    popoverHeader = () => {
+        return(
+            <Popover id="popover-basic" className="border-0 p-3" >
+                <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                    <Icomoon className="mr-2" icon="delete" size={12}/>
+                    Delete
+                </p>
+                <p className="my-1 pointer xSmallText" onClick={()=>{this.setState({msgModal:true})}}>
+                    <Icomoon className="mr-2" icon="chat" size={12}/>
+                    Msg
+                </p>  
+            </Popover>
+        )
+    }
+
     render() {
         return(
             <>
                 {this.renderOrderDataTable()}
                 {/* {this.renderOrderDelivered()} */}
                 {this.renderViewDetails()}
+                <ConfirmModal
+					visible={this.state.deleteModal}
+					heading="Delete Delivered Order"
+                    delete
+                    buttonTitle="Delete"
+					title="Are you sure you want to Delete"
+					onsubmitConfirm={() => this.handleDelete()}
+					handleClose={() => this.setState({ deleteModal: false, })}
+				/>  
+                 {this.renderMsgModal()}  
             </>
         )
     }
@@ -169,8 +190,11 @@ class OrderDelivered extends React.Component {
             <Container>
                 <div className="d-flex">
                     <div className="border col-md-4 bg-white rounded border-secondary d-flex justify-content-between py-2 my-2 mx-3">
-                        <input type="search" className="no-outline input-style smallText w-75" 
+                        <input 
+                            type="search" 
+                            className="no-outline input-style smallText w-75" 
                             placeholder="Customer Name..."
+                            onChange={this._handleSearchChange}
                         />
                         <Icomoon className="align-self-center" icon="search" size={15}/>
                     </div> 
@@ -186,8 +210,55 @@ class OrderDelivered extends React.Component {
                         checkboxSelection={true}
                         className="smallText"
                     />
+                    <div className="d-flex justify-content-center">
+                        <ToastMessage 
+                            toastMessagePop={this.state.toastDeleteSuccess}
+                            message="Delivered order Deleted successfully"
+                            handleClose={()=> this.setState({ toastDeleteSuccess: false })}
+                        />
+                    </div>
                 </div>
             </Container>
+        )
+    }
+
+
+    // Render message modal function
+    renderMsgModal() {
+        return(
+            <>
+                <Modal
+                    size="md"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                    show={this.state.msgModal}
+                >  
+                    <form onSubmit={this.onSubmitMessage}>
+                        <div className="m-3">
+                            <div className="d-flex justify-content-end">
+                                <Icomoon icon="close" size={20} className="pointer activeFontColor" onClick={()=>{this.setState({msgModal:false})}}/>
+                            </div>
+                            <Modal.Body>
+                                <CustomInput  
+                                    placeholder="Message*" 
+                                    fieldStyle="outlined"
+                                    multiline={6}
+                                    value={this.state.message}
+                                    onChange={(e)=>this.setState({message:e.target.value})}
+                                />  
+                                <div className="d-flex justify-content-center">
+                                    <ToastMessage 
+                                        toastMessagePop={this.state.toastMessageSuccess}
+                                        message="Message Sent Successfully!"
+                                        handleClose={()=> this.setState({ toastMessageSuccess: false })}
+                                    />
+                                </div>                        
+                                <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="Send" />
+                            </Modal.Body>
+                        </div>
+                    </form> 
+                </Modal> 
+            </>
         )
     }
 
@@ -295,6 +366,44 @@ class OrderDelivered extends React.Component {
 			</div>
 		);
 	};  
+
+    // Search handle function
+    _handleSearchChange = (e) => {
+        const { value } = e.target;
+        const lowercasedValue = value.toLowerCase();
+        this.setState(prevState => {
+          const rowDataState = prevState.rowDataState.filter(id =>
+            id.orderId.toLowerCase().includes(lowercasedValue) ||  
+            id.customerName.toLowerCase().includes(lowercasedValue) ||
+            id.contactNo.toLowerCase().includes(lowercasedValue) ||
+            id.deliveredBy.toLowerCase().includes(lowercasedValue) ||
+            id.createDate.toLowerCase().includes(lowercasedValue) ||
+            id.lastModifiedDate.toLowerCase().includes(lowercasedValue) 
+          );
+          return { rowDataState };
+        });   
+    };
+
+     // On submit delete function
+    handleDelete = (status) => {
+        this.setState({deleteModal:false, toastDeleteSuccess:true})
+		// const leadId = this.state.deleteId;
+		// deleteLead(leadId).then(response => {
+        //     if(response && response.status) {
+		// 		console.log(response);
+        //         this.setState({deleteModal:false,toastSuccessMessage:true})
+				
+        //     }
+        // }).catch(error => {
+        //     console.log(error);
+        // });  
+    };
+
+    // On submit message order function
+    onSubmitMessage= (e) =>{
+        e.preventDefault();
+        this.setState({toastMessageSuccess:true})
+    }
 }
 
 export default OrderDelivered

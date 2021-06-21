@@ -1,58 +1,59 @@
 {
-  "name": "trackbiz-web",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/data-grid": "^4.0.0-alpha.22",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.8.1",
-    "bootstrap": "^4.6.0",
-    "ckeditor4-react": "^1.4.0",
-    "crypto-js": "^4.0.0",
-    "mobx": "^6.1.8",
-    "mobx-persist-store": "^0.5.30",
-    "mobx-react": "^7.1.0",
-    "moment": "^2.29.1",
-    "node-sass": "^5.0.0",
-    "react": "^17.0.1",
-    "react-beautiful-dnd": "^13.0.0",
-    "react-bootstrap": "^1.5.1",
-    "react-charts": "^2.0.0-beta.7",
-    "react-dom": "^17.0.1",
-    "react-icomoon": "^2.2.4",
-    "react-pro-sidebar": "^0.6.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "react-top-loading-bar": "^2.0.1",
-    "universal-cookie": "^4.0.4",
-    "web-vitals": "^1.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "trackbiz-web",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@material-ui/core": "^4.11.3",
+        "@material-ui/data-grid": "^4.0.0-alpha.22",
+        "@material-ui/lab": "^4.0.0-alpha.57",
+        "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
+        "@testing-library/jest-dom": "^5.11.9",
+        "@testing-library/react": "^11.2.5",
+        "@testing-library/user-event": "^12.8.1",
+        "bootstrap": "^4.6.0",
+        "ckeditor4-react": "^1.4.0",
+        "crypto-js": "^4.0.0",
+        "mobx": "^6.1.8",
+        "mobx-persist-store": "^0.5.30",
+        "mobx-react": "^7.1.0",
+        "moment": "^2.29.1",
+        "node-sass": "^5.0.0",
+        "react": "^17.0.1",
+        "react-beautiful-dnd": "^13.0.0",
+        "react-bootstrap": "^1.5.1",
+        "react-charts": "^2.0.0-beta.7",
+        "react-csv": "^2.0.3",
+        "react-dom": "^17.0.1",
+        "react-icomoon": "^2.2.4",
+        "react-pro-sidebar": "^0.6.0",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "4.0.3",
+        "react-top-loading-bar": "^2.0.1",
+        "universal-cookie": "^4.0.4",
+        "web-vitals": "^1.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }

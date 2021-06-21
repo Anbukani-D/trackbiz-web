@@ -30,8 +30,8 @@ export default function CreateInventoryButton() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}><AddProduct/></MenuItem>
                 <MenuItem onClick={handleClose}><CreateCategory/></MenuItem> 
+                <MenuItem onClick={handleClose}><AddProduct/></MenuItem>
             </Menu>
         </>
     );

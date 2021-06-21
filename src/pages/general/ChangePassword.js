@@ -13,6 +13,7 @@ import CompanyLogo from '../../assets/images/company.svg';
 import Profile from '../../pages/general/Profile';
 import Settings from "../../pages/general/Settings";
 import Popover from "react-bootstrap/Popover";
+import ToastMessage from '../../common/ToastMessage';
 
 const settingPopover = (
     <Popover id="popover-setting">
@@ -30,6 +31,7 @@ class ChangePassword extends React.Component {
         showConfirmPassword:true,
         changePasswordModal:false,
         progress:'',
+        toastMessage:false
     }
 
     render() {
@@ -122,6 +124,13 @@ class ChangePassword extends React.Component {
                                         })}
                                     />
                                 </div>
+                                <div className="d-flex justify-content-center">
+                                    <ToastMessage 
+                                        toastMessagePop={this.state.toastMessage}
+                                        message="Password Changed Successfully!"
+                                        handleClose={()=> this.setState({ toastMessage: false })}
+                                    />
+                                </div>
                                 <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                             </form> 
                         </Modal.Body>
@@ -137,7 +146,7 @@ class ChangePassword extends React.Component {
 
     onSubmitChangePassword = (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastMessage:true})
         // const allValidation = this.ValidateAllInputs()
         // if (allValidation) {
         //     alert('Password Changed Successfully! ')

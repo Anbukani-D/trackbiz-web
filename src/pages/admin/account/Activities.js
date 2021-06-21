@@ -10,49 +10,18 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import {Link} from 'react-router-dom';
 import addActivities from '../../../assets/images/addLead.svg'
-
-// Render Menu function for data table data 
-const popover = (
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="edit" size={12}/>
-            Edit
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="telephone" size={12}/>
-            Call
-        </p>
-        <p className="my-1 pointer xSmallText">
-          <Icomoon className="mr-2" icon="chat" size={12}/>
-          Msg
-        </p>
-    </Popover>
-  );
-
-// Render Menu function for data table header
-const popoverHeader =(
-    <Popover id="popover-basic" className="border-0 p-3" >
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="delete" size={12}/>
-            Delete
-        </p>
-        <p className="my-1 pointer xSmallText">
-            <Icomoon className="mr-2" icon="chat" size={12}/>
-            Msg
-        </p>
-  </Popover>
-
-)
+import ConfirmModal from '../../../common/ConfirmModal';
+import ToastMessage from '../../../common/ToastMessage';
 
 class Activities extends React.Component {
     state={
         columnDataState:[],
         rowDataState:[],
         activitiesData:[],
+        // Modal delete
+        deleteModal:false,
+        // Toast delete
+        toastDeleteSuccess:false
     }
 
     componentDidMount () {
@@ -60,15 +29,15 @@ class Activities extends React.Component {
             {field: 'icon', 
             headerName:
                 <div>
-                    <OverlayTrigger trigger="click" placement="right" overlay={popoverHeader}>
-                        <Icomoon icon="vmore" size={20} />
+                    <OverlayTrigger trigger="focus" placement="right" overlay={this.popoverHeader()}>
+                        <button className="button-none"><Icomoon icon="vmore" size={20} /></button>
                     </OverlayTrigger>
                 </div>,
-                width:70,
-                renderCell: () => (
+                width:95,
+                renderCell: (data) => (
                     <div>
-                        <OverlayTrigger trigger="click" placement="right" overlay={popover}>
-                            <Icomoon  className="pointer"  icon="vmore" size={20} />
+                        <OverlayTrigger trigger="focus" placement="right" overlay={this.popover(data.id)}>
+                            <button className="button-none"><Icomoon  className="pointer"  icon="vmore" size={20} /></button>
                         </OverlayTrigger>
                     </div>
                 ),
@@ -111,11 +80,44 @@ class Activities extends React.Component {
         ]
         this.setState({columnDataState,rowDataState })
     }
+
+    // Render Menu function for data table data 
+    popover = (id)=> {
+        return (
+            <Popover id="popover-basic" className="border-0 p-3" >
+                <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                    <Icomoon className="mr-2" icon="delete" size={12} />
+                    Delete
+                </p>
+            </Popover>
+      )};
+
+       // Render Menu function for data table header
+     popoverHeader = () => {
+        return(
+           <Popover id="popover-basic" className="border-0 p-3" >
+               <p className="my-1 pointer xSmallText" onClick={()=>this.setState({deleteModal:true})}>
+                   <Icomoon className="mr-2" icon="delete" size={12}/>
+                   Delete 
+               </p>
+           </Popover>
+       )
+    }
+    
     render() {
         return(
             <>
                 {/* {this.renderActivities()} */}
                 {this.renderActivitiesDataTable()}
+                <ConfirmModal
+					visible={this.state.deleteModal}
+					heading="Delete Lead"
+                    delete
+                    buttonTitle="Delete"
+					title="Are you sure you want to Delete"
+					onsubmitConfirm={() => this.handleDelete()}
+					handleClose={() => this.setState({ deleteModal: false, })}
+				/>    
             </>
         )
     }
@@ -146,8 +148,11 @@ class Activities extends React.Component {
                         <CreateAccountButton/>
                     </div>
                     <div className="border col-md-4 bg-white rounded border-secondary d-flex justify-content-between py-2 mx-3 my-2">
-                        <input type="search" className="no-outline input-style smallText w-75" 
+                        <input 
+                            type="search" 
+                            className="no-outline input-style smallText w-75" 
                             placeholder="User Name, Department..."
+                            onChange={this._handleSearchChange}
                         />
                         <Icomoon className="align-self-center" icon="search" size={15}/>
                     </div> 
@@ -163,10 +168,50 @@ class Activities extends React.Component {
                         checkboxSelection={true}
                         className="smallText"
                     />
+                     <div className="d-flex justify-content-center">
+                        <ToastMessage 
+                            toastMessagePop={this.state.toastDeleteSuccess}
+                            message="Activities Deleted successfully"
+                            handleClose={()=> this.setState({ toastDeleteSuccess: false })}
+                        />
+                    </div>
                 </div>
             </Container>
         )
     }
+
+    // Search handle function
+    _handleSearchChange = (e) => {
+        const { value } = e.target;
+        const lowercasedValue = value.toLowerCase();
+        
+        this.setState(prevState => {
+            const rowDataState = prevState.rowDataState.filter(id =>
+                id.name.toLowerCase().includes(lowercasedValue) ||  
+                id.department.toLowerCase().includes(lowercasedValue) ||
+                id.activity.toLowerCase().includes(lowercasedValue) ||
+                id.createDate.toLowerCase().includes(lowercasedValue) ||
+                id.lastModifiedDate.toLowerCase().includes(lowercasedValue) 
+            );
+          return { rowDataState };
+        });   
+    };
+    
+     // On submit delete function
+    handleDelete = (status) => {
+        this.setState({deleteModal:false, toastDeleteSuccess:true})
+		// const leadId = this.state.deleteId;
+		// deleteLead(leadId).then(response => {
+        //     if(response && response.status) {
+		// 		console.log(response);
+        //         this.setState({deleteModal:false,toastSuccessMessage:true})
+				
+        //     }
+        // }).catch(error => {
+        //     console.log(error);
+        // });
+          
+    };
 }
 
 export default Activities

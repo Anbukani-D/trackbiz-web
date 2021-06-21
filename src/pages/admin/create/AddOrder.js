@@ -6,6 +6,7 @@ import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import { assignRepresentativeOptions, billingLocationOptions, orderSiteOptions, deliveryLocationOptions } from '../../../common/DropdownList';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class AddOrder extends React.Component {
     state={
@@ -17,6 +18,8 @@ class AddOrder extends React.Component {
         quantity:'',
         addOrderModal:false,
         productData:[],
+        progress:'',
+        toastSuccessMessage:false
     }
 
     componentDidMount() {
@@ -122,7 +125,10 @@ class AddOrder extends React.Component {
                             </div> 
                             <div className="mt-3">
                             <div className="border col-md-12 bg-white rounded border-secondary d-flex justify-content-between py-2 ml-0">
-                                <input type="search" className="no-outline input-style smallText w-75" 
+                                <input 
+                                    type="search" 
+                                    className="no-outline input-style smallText w-75" 
+                                    onChange={this._handleSearchChange}
                                     placeholder="PRODUCT CODE, PRODUCT NAME..."
                                 />
                                 <Icomoon className="align-self-center" icon="search" size={15}/>
@@ -137,7 +143,7 @@ class AddOrder extends React.Component {
                                     </thead>
                                     <tbody>
                                         {this.state.productData.map((productData) => (
-                                        <tr >
+                                        <tr>
                                             <td>{productData.productCode}</td>
                                             <td>{productData.productName}</td>
                                             <td>{productData.qty}</td>
@@ -146,7 +152,14 @@ class AddOrder extends React.Component {
                                         ))}
                                     </tbody>
                                 </table>
-                            </div>                        
+                            </div> 
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Order created successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>                       
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="Save Order" />
                         </form> 
                     </Modal.Body>
@@ -154,13 +167,28 @@ class AddOrder extends React.Component {
             </Modal>  
         )    
     } 
+    _handleSearchChange = (e) => {
+        const { value } = e.target;
+        const lowercasedValue = value.toLowerCase();
+        
+        this.setState(prevState => {
+          const productData = prevState.productData.filter(id =>
+            id.productCode.toLowerCase().includes(lowercasedValue) ||  
+            id.productName.toLowerCase().includes(lowercasedValue) ||
+            id.qty.toLowerCase().includes(lowercasedValue)
+            
+          );
+          return { productData };
+        });
+       
+      };
 
 
     // onsubmit function for add order inputs
 
     onSubmitAddOrder= (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default AddOrder;

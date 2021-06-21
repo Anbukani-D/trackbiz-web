@@ -1,3 +1,4 @@
+
 import React , { useState,useRef } from 'react';
 import {
 	makeStyles
@@ -12,8 +13,6 @@ import Notification from '../pages/general/Notification';
 import Popover from 'react-bootstrap/Popover'
 import Overlay from 'react-bootstrap/Overlay';
 import LoadingBar from 'react-top-loading-bar';
-
-
 
 const useStyles = makeStyles((theme) => ({
         root: {
@@ -216,7 +215,6 @@ export function NotificationIcon() {
         </>
     );
   }
-
 
 
 

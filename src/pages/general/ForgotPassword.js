@@ -1,4 +1,4 @@
-// Forgot password Page
+  // Forgot password Page
 
 import React from 'react';
 import "../../css/common.css";
@@ -6,7 +6,7 @@ import Logo from "../../assets/images/tracbizvLogo.svg";
 import ForgotImg from "../../assets/images/forgotPassword.svg";
 import {CustomInput, ThemeButton} from "../../common/Components";
 import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
+import ToastMessage from '../../common/ToastMessage';
 import Row from 'react-bootstrap/Row';
 import LoadingBar from 'react-top-loading-bar';
 import Icomoon from '../../libraries/Icomoon';
@@ -15,7 +15,8 @@ import Icomoon from '../../libraries/Icomoon';
 class ForgotPassword extends React.Component {
     state={
         userName:'',
-        progress:''
+        progress:'',
+        toastMessage:false
     }
 
     render() {
@@ -27,16 +28,16 @@ class ForgotPassword extends React.Component {
                     onLoaderFinished={() => this.setState({progress:100})}
                 />  
                 <Row>
-                    <Col sm={6} md={4}>
+                    <div className="col-md-4">
                         {this.renderForgotPassword()}
-                    </Col>
-                    <Col sm={12} md={8} className="activeBgColor position-relative">
+                    </div>
+                    <div className="activeBgColor position-relative col-md-8">
                         {/* <div style={{ backgroundImage: `url(${LoginImg})`, height:900} } >
                         </div>    */}
                         {this.renderForgotPasswordImage()}
                         <Row  className="d-flex justify-content-end">
                         </Row>
-                    </Col>
+                    </div>
                     
                 </Row>
             </Container>             
@@ -47,9 +48,9 @@ class ForgotPassword extends React.Component {
 
     renderForgotPasswordImage () {
         return(
-            <>
+            <div fluid noGutters md>
                 <img className="my-5"  alt="Forgot" src={ForgotImg} width="100%" height="693" />
-            </> 
+            </div> 
         )
     }
 
@@ -57,7 +58,7 @@ class ForgotPassword extends React.Component {
 
     renderForgotPassword() {
         return(
-            <Container>
+            <div>
                 <form onSubmit={this.onSubmitForgotPassword}>
                     <Row className="pt-3 my-3">  
                         <Icomoon className="pointer fontColor"  icon="larrow" size={20} onClick={()=>this.props.history.goBack()}/>
@@ -83,9 +84,16 @@ class ForgotPassword extends React.Component {
                             error
                         />
                     </Row>
-                    <Row className="pl-3"> 
+                    <div className="d-flex justify-content-center">
+                        <ToastMessage 
+                            toastMessagePop={this.state.toastMessage}
+                            message="Please check your mail."
+                            handleClose={()=> this.setState({ toastMessage: false })}
+                        />
+                    </div>
+                    <div> 
                         <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle font-weight-bold megaText mt-3 fontColor py-3" label="SEND ME NEW PASSWORD"/>
-                    </Row>
+                    </div>
                     <p className="smallText text-justify pt-5">
                         <span className="font-weight-bold">WARNING:</span> 
                             This application is available only for authorized users of 'TrackBiz'. 
@@ -93,21 +101,17 @@ class ForgotPassword extends React.Component {
                             By accessing this system, you agree that your actions may be monitored if unauthorized user is suspected.  
                     </p>
                 </form>
-            </Container> 
+            </div> 
         )
     }
     
-
     // onsubmit function for forgot password inputs
 
     onSubmitForgotPassword = (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
-        this.props.history.replace("/login");         
+        this.setState({progress:100, toastMessage:true})
+        // this.props.history.replace("/login");         
     }
 }
-
-
-
 
 export default ForgotPassword

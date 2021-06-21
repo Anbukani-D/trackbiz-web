@@ -38,18 +38,18 @@ class Track extends React.Component {
 			},
 			{
                 id: 2,
-                drivername:'Arun kumar',
-                phoneNumber:'+91 9887654567',
+                drivername:'John',
+                phoneNumber:'+91 988765454545',
                 driverImage: Avtar,
-                trackingId:'1234567',
-                houseName:'Little Heaven',
-                street:'Channasandra Maiin Rd,',
-                area:'whitefield',
+                trackingId:'1234444',
+                houseName:'Little home',
+                street:'Magadi road,',
+                area:'rajaji nagar',
                 city:'Bangalore',
                 state:'Karnataka',
-                pincode:'560023',
-                vehicleNo:'KA03M1011',
-                distance:'12 Km.'
+                pincode:'560022',
+                vehicleNo:'KA03M1012',
+                distance:'18 Km.'
             },	  
             {
                 id: 3,
@@ -111,13 +111,13 @@ class Track extends React.Component {
                 id: 2,
                 productName:'Door',
                 quantity:'5',
-                orderDate:'Feb 03, 2021'	
+                orderDate:'Mar 04, 2022'	
 			},
             {
                 id: 3,
                 productName:'Door',
                 quantity:'4',
-                orderDate:'Feb 03, 2021'	
+                orderDate:'Dec 03, 2021'	
 			},
             {
                 id: 4,
@@ -152,8 +152,11 @@ class Track extends React.Component {
                         <Col md={5}>
                             <Row className="p-2">
                                 <div className="border col-md-8 bg-white rounded border-secondary d-flex justify-content-between py-2 ml-2">
-                                    <input type="search" className="no-outline input-style smallText w-75" 
+                                    <input 
+                                        type="search" 
+                                        className="no-outline input-style smallText w-75" 
                                         placeholder="Location Name..."
+                                        onChange={this._handleSearchChange}
                                     />
                                     <Icomoon className="align-self-center" icon="search" size={15}/>
                                 </div>
@@ -176,6 +179,29 @@ class Track extends React.Component {
             </Container> 
         )
     }
+    _handleSearchChange = (e) => {
+        const { value } = e.target;
+        const lowercasedValue = value.toLowerCase();
+        
+        this.setState(prevState => {
+          const orderTracking = prevState.orderTracking.filter(id =>
+            id.drivername.toLowerCase().includes(lowercasedValue) ||  
+            id.phoneNumber.toLowerCase().includes(lowercasedValue) ||
+            id.trackingId.toLowerCase().includes(lowercasedValue) ||
+            id.houseName.toLowerCase().includes(lowercasedValue) ||  
+            id.street.toLowerCase().includes(lowercasedValue) ||
+            id.area.toLowerCase().includes(lowercasedValue) ||
+            id.city.toLowerCase().includes(lowercasedValue) ||
+            id.state.toLowerCase().includes(lowercasedValue) ||
+            id.pincode.toLowerCase().includes(lowercasedValue) ||  
+            id.vehicleNo.toLowerCase().includes(lowercasedValue) ||
+            id.distance.toLowerCase().includes(lowercasedValue) 
+            
+          );
+          return { orderTracking };
+        });
+       
+      };
 
     // Render image function
     renderInitialTrack() {
@@ -372,6 +398,7 @@ class Track extends React.Component {
 			</div>
 		)
 	}
+    
 	
     // Render data for popup 
 	renderDetails = (label, value) => {

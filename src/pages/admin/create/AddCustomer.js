@@ -6,6 +6,7 @@ import {ThemeButton, CustomInput} from "../../../common/Components";
 import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class AddCustomer extends React.Component {
     state={
@@ -17,7 +18,8 @@ class AddCustomer extends React.Component {
         gstin:'',
         location:'',
         addCustomerModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false
     }
 
     render() {
@@ -103,6 +105,13 @@ class AddCustomer extends React.Component {
                                     onChange={(e)=>this.setState({location:e.target.value})}
                                 />
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Customer added successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>
                             <ThemeButton 
                                 type="submit" 
                                 wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" 
@@ -125,7 +134,7 @@ class AddCustomer extends React.Component {
     //onsubmit function for add customer inputs
     onSubmitAddCustomer= (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default AddCustomer;

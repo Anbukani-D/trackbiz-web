@@ -8,6 +8,7 @@ import Avtar from "../../../assets/images/avtar.png"
 import Avatar from '@material-ui/core/Avatar';
 import Modal from 'react-bootstrap/Modal'
 import LoadingBar from 'react-top-loading-bar'
+import ToastMessage from '../../../common/ToastMessage';
 
 class EditProfile extends React.Component{
     state={
@@ -18,6 +19,7 @@ class EditProfile extends React.Component{
         editProfileModal:false,
         progress:'',
         imagePreviewUrl:'',
+        toastSuccessMessage:false
     }
     render(){
         return (
@@ -95,6 +97,13 @@ class EditProfile extends React.Component{
                                     onChange={(e)=>this.setState({company:e.target.value})}
                                 />
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="User Updated successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                         </form> 
                     </Modal.Body>
@@ -126,7 +135,7 @@ class EditProfile extends React.Component{
     // onsubmit function for edit profile input
     onSubmitEditProfile = (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 

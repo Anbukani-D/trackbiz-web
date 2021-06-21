@@ -1,4 +1,4 @@
-// Sales tab navigation page
+  // Sales tab navigation page
 
 import React from 'react';
 import { Layout, NotificationIcon } from '../../../common/Components';

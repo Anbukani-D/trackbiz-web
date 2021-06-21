@@ -5,13 +5,15 @@ import "../../../css/common.css";
 import Icomoon from "../../../libraries/Icomoon";
 import {CustomInput, ThemeButton} from "../../../common/Components";
 import Modal from 'react-bootstrap/Modal'
-import LoadingBar from 'react-top-loading-bar'
+import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class EditLocation extends React.Component{
     state={
         location:'26, 1 rajaji nagar main road 14th main, bangalore-560034',
         editLocationModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false
     }
     render(){
         return (
@@ -52,6 +54,13 @@ class EditLocation extends React.Component{
                                     rows={4}
                                 />
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Location updated successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                         </form> 
                     </Modal.Body>
@@ -62,7 +71,7 @@ class EditLocation extends React.Component{
     // onsubmit function for edit profile input
     onSubmitEditLocation = (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 

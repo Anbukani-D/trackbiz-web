@@ -87,7 +87,7 @@ const MenuList = () => {
 			>
 			</Item>
 			
-			{/* <Item
+			<Item
 				title={"Quotation"}
 				link={"/quotation"}
 				icon={'quotation'}
@@ -98,7 +98,7 @@ const MenuList = () => {
 						: false
 				}
 			>
-			</Item> */}
+			</Item>
 		</Menu> 		
 		</>
 	);

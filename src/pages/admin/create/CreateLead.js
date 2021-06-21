@@ -6,6 +6,7 @@ import {ThemeButton, CustomInput} from "../../../common/Components";
 import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class CreateLead extends React.Component {
     state={
@@ -16,7 +17,9 @@ class CreateLead extends React.Component {
         description:'',
         timeSlot:'',
         createLeadModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false,
+        createAddField:false
     }
 
     render() {
@@ -100,6 +103,18 @@ class CreateLead extends React.Component {
                                     />
                                 </div>
                             </div>
+                            <div className="d-flex align-items-center my-3">
+                                <Icomoon icon="addField" className="align-self-center mx-3 pointer" size={25} onClick={()=>{this.setState({createAddField:true})}} />
+                                <span className="smallText pointer" onClick={()=>{this.setState({createAddField:true})}}>Add Field</span>
+                            </div>
+                            {this.state.createAddField ? this.renderAddField() : ' '}
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Lead created successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                         </form> 
                     </Modal.Body>
@@ -107,6 +122,19 @@ class CreateLead extends React.Component {
             </Modal>  
         )    
     } 
+
+    renderAddField() {
+        return(
+            <>
+                <CustomInput  
+                    placeholder="Field Name*" 
+                    value={this.state.fieldName}
+                    onChange={(e)=>this.setState({fieldName:e.target.value})}
+                />
+            </>
+        )
+    }
+    
 
     // Handle change function for time slot
     timeSlotHandleChange = timeSlot => {
@@ -118,7 +146,7 @@ class CreateLead extends React.Component {
 
     onSubmitCreateLead= (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default CreateLead;

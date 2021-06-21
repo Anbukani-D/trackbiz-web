@@ -6,6 +6,7 @@ import {ThemeButton, CustomInput} from "../../../common/Components";
 import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class AddLocation extends React.Component {
     state={
@@ -13,7 +14,8 @@ class AddLocation extends React.Component {
         locationName:'',
         locationAddress:'',
         addLocationModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false
     }
 
     render() {
@@ -68,6 +70,13 @@ class AddLocation extends React.Component {
                                     onChange={(e)=>this.setState({locationAddress:e.target.value})}
                                 />
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Location added successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE" />
                         </form> 
                     </Modal.Body>
@@ -81,7 +90,7 @@ class AddLocation extends React.Component {
 
     onSubmitAddLocation = (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default AddLocation;

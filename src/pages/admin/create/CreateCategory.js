@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 import Icomoon from '../../../libraries/Icomoon';
 import {masterCategoryOptions} from '../../../common/DropdownList';
 import LoadingBar from 'react-top-loading-bar';
+import ToastMessage from '../../../common/ToastMessage';
 
 class CreateCategory extends React.Component {
     state={
@@ -14,7 +15,8 @@ class CreateCategory extends React.Component {
         masterCategory:'',
         location:'',
         createCategoryModal:false,
-        progress:''
+        progress:'',
+        toastSuccessMessage:false
     }
 
     render() {
@@ -71,6 +73,13 @@ class CreateCategory extends React.Component {
                                     onChange={(e)=>this.setState({location:e.target.value})}
                                 />
                             </div>
+                            <div className="d-flex justify-content-center">
+                                <ToastMessage 
+                                    toastMessagePop={this.state.toastSuccessMessage}
+                                    message="Category created successfully"
+                                    handleClose={()=> this.setState({ toastSuccessMessage: false })}
+                                />
+                            </div>     
                             <ThemeButton type="submit" wrapperClass="btn activeBgColor col-md-12 fontStyle mt-3 py-2 megaText fontColor" label="SAVE"/>
                         </form> 
                     </Modal.Body>
@@ -89,7 +98,7 @@ class CreateCategory extends React.Component {
 
     onSubmitCreateCategory= (e) =>{
         e.preventDefault();
-        this.setState({progress:100})
+        this.setState({progress:100, toastSuccessMessage:true})
     }
 }
 export default CreateCategory;
